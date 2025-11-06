@@ -47,7 +47,7 @@
 
 <p align="center">
   <a href="https://www.linkedin.com/in/divyansh-chawla13/"><img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin" /></a>
-  <a href="mailto:chawladivyansh13110@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" /></a>
+  <a href="mailto:chawladivyansh131106@gmail.com"><img src="https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white" /></a>
   <a href="https://github.com/divy13ansh"><img src="https://img.shields.io/badge/GitHub-171515?style=for-the-badge&logo=github" /></a>
 </p>
 
