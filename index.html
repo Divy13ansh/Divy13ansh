@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>divyansh chawla</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #e4e4e7;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Gradient Background */
+        .gradient-bg {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* Grid pattern */
+        .gradient-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.3;
+            background-image: 
+                linear-gradient(rgba(64, 64, 64, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(64, 64, 64, 0.3) 1px, transparent 1px);
+            background-size: 40px 40px;
+            mask-image: 
+                linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%),
+                linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+            mask-composite: intersect;
+            -webkit-mask-image: 
+                linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%),
+                linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+            -webkit-mask-composite: source-in;
+        }
+
+        .gradient-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.2;
+            mix-blend-mode: screen;
+            filter: blur(80px);
+            background: radial-gradient(
+                ellipse 120% 80% at var(--mouse-x) var(--mouse-y),
+                rgba(100, 100, 255, 0.4) 0%,
+                rgba(82, 82, 91, 0.3) 30%,
+                transparent 60%
+            );
+        }
+
+        /* Corner accents */
+        .corner-accents {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .corner-accents::before,
+        .corner-accents::after {
+            content: '';
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: radial-gradient(circle, rgba(100, 100, 255, 0.08) 0%, transparent 70%);
+        }
+
+        .corner-accents::before {
+            top: 0;
+            left: 0;
+        }
+
+        .corner-accents::after {
+            bottom: 0;
+            right: 0;
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Hero */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+
+        .hero-content {
+            font-family: 'JetBrains Mono', monospace;
+            max-width: 100%;
+        }
+
+        .hero-intro {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 12px;
+        }
+
+        .hero-name {
+            font-size: 56px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+            background: linear-gradient(180deg, #6a6a6a 0%, #c8c8c8 45%, #ffffff 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-role {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 40px;
+        }
+
+        .hero-desc {
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.5);
+            max-width: 600px;
+            margin-bottom: 32px;
+        }
+
+        .hero-links {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .hero-link {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            padding: 10px 18px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+
+        .hero-link:hover {
+            color: rgba(100, 100, 255, 0.9);
+            border-color: rgba(100, 100, 255, 0.3);
+            background: rgba(100, 100, 255, 0.05);
+        }
+
+        .command {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .output {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 32px;
+        }
+
+        .output.large {
+            font-size: 48px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.9);
+            margin-left: 4px;
+            animation: blink 1s infinite;
+            vertical-align: middle;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        /* Sections */
+        section {
+            padding: 60px 0;
+        }
+
+        section.hero {
+            padding: 0;
+            min-height: 100vh;
+            margin-bottom: 0;
+        }
+
+        section#projects {
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+
+        section#about {
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+
+        section#skills {
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+
+        section#contact {
+            padding-top: 60px;
+            padding-bottom: 80px;
+        }
+
+        .section-header {
+            font-family: 'JetBrains Mono', monospace;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 13px;
+            margin-bottom: 36px;
+        }
+
+        /* About */
+        .about-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .code-comment {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Skills */
+        .skills-category {
+            margin-bottom: 40px;
+        }
+
+        .skills-category:last-child {
+            margin-bottom: 0;
+        }
+
+        .skills-category h3 {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 20px;
+            font-weight: 400;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+        }
+
+        .skill-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 16px;
+            text-align: center;
+            transition: border-color 0.2s;
+        }
+
+        .skill-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .skill-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 28px;
+            transition: all 0.2s ease;
+            display: flex;
+            gap: 24px;
+            align-items: flex-start;
+        }
+
+        .project-card:hover {
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .project-logo {
+            flex-shrink: 0;
+            width: 56px;
+            height: 56px;
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .project-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .project-card.no-logo {
+            display: block;
+        }
+
+        .project-card.no-logo .project-content {
+            padding: 0;
+        }
+
+        .project-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .project-header {
+            margin-bottom: 16px;
+        }
+
+        .project-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .project-tech {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .project-desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            text-decoration: none;
+            transition: all 0.2s;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: rgba(100, 100, 255, 0.12);
+            color: rgba(100, 100, 255, 1);
+            border: 1px solid rgba(100, 100, 255, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: rgba(100, 100, 255, 0.18);
+            border-color: rgba(100, 100, 255, 0.4);
+        }
+
+        .btn-secondary {
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Contact */
+        .contact-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .contact-email {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 20px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .contact-socials {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .contact-socials a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            transition: color 0.2s;
+        }
+
+        .contact-socials a:hover {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            section {
+                padding: 50px 0;
+            }
+
+            section#projects {
+                padding-top: 50px;
+            }
+
+            .hero-name {
+                font-size: 40px;
+            }
+
+            .hero-role {
+                font-size: 18px;
+            }
+
+            .hero-desc {
+                font-size: 14px;
+            }
+
+            .project-card {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Gradient Background -->
+    <div class="gradient-bg">
+        <div class="gradient-layer"></div>
+    </div>
+
+    <!-- Corner Accents -->
+    <div class="corner-accents"></div>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-intro">hey, i'm</div>
+                <h1 class="hero-name">divyansh</h1>
+                <p class="hero-role">building ai systems</p>
+                <p class="hero-desc">
+                    love to build backend systems and AI pipelines. focused on scalable architectures,
+                    data processing, and ML infrastructure. currently learning classical ML.
+                    <br><br>
+                    sophomore at chitkara university (be cse-aiml, '28). based in chandigarh.
+                </p>
+                <div class="hero-links">
+                    <a href="#projects" class="hero-link">projects</a>
+                    <a href="#contact" class="hero-link">contact</a>
+                    <a href="https://github.com/divy13ansh" class="hero-link">github</a>
+                    <a href="https://leetcode.com/u/divy13ansh/" class="hero-link">leetcode</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects">
+        <div class="container">
+            <div class="section-header">$ ls projects</div>
+            
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-logo">
+                        <img src="assets/Prism_motion.jpeg" alt="Prism Motion logo">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-header">
+                            <div class="project-title">prism motion</div>
+                            <div class="project-tech">python • remotion • manim • ffmpeg • sadtalker-ai</div>
+                        </div>
+                        <p class="project-desc">
+                            ai-powered video production pipeline for pharmaceutical companies. 
+                            automated compliant video generation with focus on accuracy in regulated industry
+                        </p>
+                        <div class="project-links">
+                            <a href="https://youtu.be/dv5grFenOPc" class="btn btn-primary">demo</a>
+                            <a href="https://github.com/rachitgoyal14/prismMotion-EvolveAI" class="btn btn-secondary">github</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-logo">
+                        <img src="assets/dermora-logo.avif" alt="Dermora.ai logo">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-header">
+                            <div class="project-title">dermora.ai</div>
+                            <div class="project-tech">react native • pytorch • fastapi • dinov2 • azure</div>
+                        </div>
+                        <p class="project-desc">
+                            android app combining skin condition detection using fine-tuned vision transformers, 
+                            mood tracking, and voice-based mental health agent
+                        </p>
+                        <div class="project-links">
+                            <a href="https://www.youtube.com/watch?v=3qIusry2wh8" class="btn btn-primary">demo</a>
+                            <a href="https://github.com/rachitgoyal14/dermora-DUHacks" class="btn btn-secondary">github</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-logo">
+                        <img src="assets/mime-logo.avif" alt="Mime.ai logo">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-header">
+                            <div class="project-title">mime.ai</div>
+                            <div class="project-tech">next.js • three.js • django • mediapipe • tensorflow</div>
+                        </div>
+                        <p class="project-desc">
+                            real-time sign language translation with computer vision. 
+                            trained on 1000+ hours of asl footage with interactive 3d visualization
+                        </p>
+                        <div class="project-links">
+                            <a href="https://mime-ai-7vxu.vercel.app/" class="btn btn-primary">live</a>
+                            <a href="https://github.com/rachitgoyal14/mime_ai" class="btn btn-secondary">github</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-logo">
+                        <img src="assets/oaktrek-logo-1.avif" alt="Oaktrek logo">
+                    </div>
+                    <div class="project-content">
+                        <div class="project-header">
+                            <div class="project-title">oaktrek</div>
+                            <div class="project-tech">django • html/css • razorpay • sqlite</div>
+                        </div>
+                        <p class="project-desc">
+                            full-stack e-commerce platform for sneakers with real-time auction bidding, 
+                            payment integration, and inventory management
+                        </p>
+                        <div class="project-links">
+                            <a href="https://divy13ansh.pythonanywhere.com/" class="btn btn-primary">live</a>
+                            <a href="https://github.com/rachitgoyal14/oaktrek_v3" class="btn btn-secondary">github</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card no-logo">
+                    <div class="project-content">
+                        <div class="project-header">
+                            <div class="project-title">github discord bot</div>
+                            <div class="project-tech">python • discord.py • github api • azure openai</div>
+                        </div>
+                        <p class="project-desc">
+                            discord bot that inspects and analyzes github repositories using ai. 
+                            fetches repo structure, contributors, commits, and provides llm-powered code analysis
+                        </p>
+                        <div class="project-links">
+                            <a href="https://github.com/Divy13ansh/discord-bot-for-github" class="btn btn-secondary">github</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header">$ cat about</div>
+            
+            <div class="about-card">
+                <div class="code-comment">// about</div>
+                <br>
+                <div>const engineer = {</div>
+                <div>&nbsp;&nbsp;name: "divyansh chawla",</div>
+                <div>&nbsp;&nbsp;location: "chandigarh, india",</div>
+                <div>&nbsp;&nbsp;focus: "backend systems, ai pipelines, ml infrastructure"</div>
+                <div>}</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-header">$ ls skills</div>
+            
+            <div class="skills-category">
+                <h3>languages</h3>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <div class="skill-name">python</div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">go</div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">c/c++</div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">java</div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">sql</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skills-category">
+                <h3>frameworks & tools</h3>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <div class="skill-name">fastapi</div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">django</div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">flask</div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">langchain</div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">git</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="skills-category">
+                <h3>cloud & databases</h3>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <div class="skill-name">azure</div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">postgresql</div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">mysql</div>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-name">sqlite</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-header">$ contact</div>
+            
+            <div class="contact-card">
+                <a href="mailto:chawladivyansh131106@gmail.com" class="contact-email">
+                    chawladivyansh131106@gmail.com
+                </a>
+                
+                <div class="contact-socials">
+                    <a href="https://github.com/divy13ansh">github</a>
+                    <a href="https://linkedin.com/in/divyansh-chawla13">linkedin</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>divyansh chawla • 2026</p>
+    </footer>
+
+    <script>
+        // Mouse gradient follow
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            document.documentElement.style.setProperty('--mouse-x', x + '%');
+            document.documentElement.style.setProperty('--mouse-y', y + '%');
+        });
+    </script>
+
+</body>
+</html>
